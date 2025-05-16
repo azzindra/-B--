@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Scenes/GameManager.unity
+    guid: 2b70c56b3fe3b4942b61501407023a62
+  - enabled: 1
+    path: Assets/Scenes/Introduction.unity
+    guid: a6cff88395db30a4297e37558cf118df
+  - enabled: 1
+    path: Assets/Scenes/LoadingScreen.unity
+    guid: 06e2b65dc11d7694caa3dce2730d823d
+  - enabled: 1
+    path: Assets/Scenes/Scenario Scene/Scenario1.unity
+    guid: bd6bbb17f32e6a647a84a5969c1bcd74
+  - enabled: 1
+    path: Assets/Scenes/Scenario Scene/Scenario2.unity
+    guid: 17e3547070b17564fbd314f5ba4c92b8
+  - enabled: 1
+    path: Assets/Scenes/Scenario Scene/Scenario3.unity
+    guid: 461c65a73b93466478924788fc7538b6
+  - enabled: 1
+    path: Assets/Scenes/Scenario Scene/Scenario4.unity
+    guid: 57621762aca7a564e9efca815727fa94
+  - enabled: 1
+    path: Assets/Scenes/Scenario Scene/Scenario5.unity
+    guid: 0fb56996cb80f304b98c23a3eaa53bca
+  - enabled: 1
+    path: Assets/Scenes/Scenario Scene/Scenario6.unity
+    guid: c044a5369b0861b46aa5cf51048f2bc8
+  - enabled: 1
+    path: Assets/Scenes/Scenario Scene/Scenario7.unity
+    guid: 5483b22eac1ddb54986e3662ffb05019
+  - enabled: 1
+    path: Assets/Scenes/Scenario Scene/Scenario8.unity
+    guid: c6329947612d65344aabec1bba536260
+  - enabled: 1
+    path: Assets/Scenes/Scenario Scene/Scenario9.unity
+    guid: decdfcf1554e8de41bab89892ebdf371
+  - enabled: 1
+    path: Assets/Scenes/Scenario Scene/Scenario10.unity
+    guid: 5ff9b504edd24f044b9ac710476cace9
+  - enabled: 1
+    path: Assets/Scenes/InterimEvaluation.unity
+    guid: 389cbdf393a2a6848b59e740ce615974
+  - enabled: 1
+    path: Assets/Scenes/EvaluationReport.unity
+    guid: 60f019306693a194c961e89f16fd45fe
+  m_configObjects: {}
