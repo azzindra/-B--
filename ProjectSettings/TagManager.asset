@@ -19,6 +19,7 @@ TagManager:
   - OccupiedSpot
   - ObstacleCar
   - DisabilityParking
+  - Puddle
   layers:
   - Default
   - TransparentFX

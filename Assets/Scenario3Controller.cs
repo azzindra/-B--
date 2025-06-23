@@ -73,7 +73,7 @@ public class Scenario3Controller : MonoBehaviour
     {
         for (int i = 0; i < foodCounts.Length; i++)
         {
-            orderTexts[i].text = "food " + (i + 1) + " : " + foodCounts[i].ToString();
+            orderTexts[i].text = "Food " + (i + 1) + "   " + foodCounts[i].ToString();
         }
     }
 

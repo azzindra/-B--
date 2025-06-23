@@ -1,75 +1,125 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+
+public enum EndingType
+{
+    Good,
+    Bad,
+    Stupid,
+    Neutral,
+    Other
+}
+
+[System.Serializable]
+public struct EndingScore
+{
+    public EndingType type;
+    public int score;
+}
+
 
 public class Scenario7Controller : MonoBehaviour
 {
-    public GameObject introPanel;
-    public GameObject endingGoodPanel;
-    public GameObject endingBadPanel;
-    public GameObject gameplayRoot;
-    public float introDuration = 2f;
-    public float maxDuration = 10f;
+    [Header("Scene Sections")]
+    public GameObject introCutscene;
+    public GameObject gameplay;
+    public GameObject endingCutscene;
 
+    [Header("Ending Panels")]
+    public GameObject goodEndingPanel;
+    public GameObject badEndingPanel;
+    public GameObject stupidEndingPanel; // Optional tambahan
+
+    [Header("Reference")]
     public FireController fireController;
 
-    private float timer = 0f;
-    private bool gameplayStarted = false;
-    private bool endingShown = false;
+    [Header("Timing")]
+    public float timeLimit = 12f;
+    private float timer;
+
+    private bool scenarioEnded = false;
+
+    [Header("Score Settings")]
+    public List<EndingScore> endingScores = new List<EndingScore>();
 
     void Start()
     {
-        introPanel.SetActive(true);
-        gameplayRoot.SetActive(false);
-        endingGoodPanel.SetActive(false);
-        endingBadPanel.SetActive(false);
+        timer = timeLimit;
+        introCutscene.SetActive(true);
+        gameplay.SetActive(false);
+        endingCutscene.SetActive(false);
 
-        Invoke(nameof(StartGameplay), introDuration);
+        Invoke(nameof(StartGameplay), 2f); // Durasi intro 2 detik
     }
 
     void StartGameplay()
     {
-        introPanel.SetActive(false);
-        gameplayRoot.SetActive(true);
-        gameplayStarted = true;
-        fireController.StartMoving();
+        introCutscene.SetActive(false);
+        gameplay.SetActive(true);
     }
 
     void Update()
     {
-        if (!gameplayStarted || endingShown) return;
+        if (!gameplay.activeSelf || scenarioEnded) return;
 
-        timer += Time.deltaTime;
+        timer -= Time.deltaTime;
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (fireController != null && fireController.HasReachedEnd)
         {
-            fireController.IncreaseSpeed();
-            Debug.Log("Space ditekan, kecepatan api: " + Time.time);
+            TriggerEnding(EndingType.Good);
         }
-
-        if (fireController.HasReachedEnd)
+        else if (timer <= 0f)
         {
-            Debug.Log("Api mencapai ujung!");
-            ShowEnding(true);
-        }
-        else if (timer >= maxDuration)
-        {
-            Debug.Log("Waktu habis!");
-            ShowEnding(false);
+            TriggerEnding(EndingType.Bad);
         }
     }
 
-
-    void ShowEnding(bool isGood)
+    void TriggerEnding(EndingType type)
     {
-        endingShown = true;
-        gameplayRoot.SetActive(false);
+        if (scenarioEnded) return;
 
-        if (isGood)
-            endingGoodPanel.SetActive(true);
-        else
-            endingBadPanel.SetActive(true);
+        scenarioEnded = true;
+        gameplay.SetActive(false);
+        endingCutscene.SetActive(true);
+
+        // Reset all panels first
+        goodEndingPanel?.SetActive(false);
+        badEndingPanel?.SetActive(false);
+        stupidEndingPanel?.SetActive(false);
+
+        // Show panel based on type
+        switch (type)
+        {
+            case EndingType.Good:
+                goodEndingPanel?.SetActive(true);
+                break;
+            case EndingType.Bad:
+                badEndingPanel?.SetActive(true);
+                break;
+            case EndingType.Stupid:
+                stupidEndingPanel?.SetActive(true);
+                break;
+            // Tambah panel lainnya sesuai kebutuhan
+        }
+
+        // Tambah skor berdasarkan ending type
+        int scoreToAdd = GetScoreByEnding(type);
+        if (ScoreManager.Instance != null)
+        {
+            ScoreManager.Instance.AddScore(scoreToAdd);
+        }
+
+        Debug.Log($"🔔 {type} Ending Triggered! Score: {scoreToAdd}");
     }
 
+    int GetScoreByEnding(EndingType type)
+    {
+        foreach (var entry in endingScores)
+        {
+            if (entry.type == type)
+                return entry.score;
+        }
+        return 0; // Default kalau gak ketemu
+    }
 }

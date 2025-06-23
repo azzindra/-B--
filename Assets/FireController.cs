@@ -4,43 +4,34 @@ using UnityEngine;
 
 public class FireController : MonoBehaviour
 {
-    public Transform[] pathPoints;
-    public float baseSpeed = 1f;
-    public float speedIncrement = 0.5f;
+    public Transform[] waypoints;
+    public float moveSpeed = 2f;
+    public float boostedSpeed = 5f;
 
     private int currentIndex = 0;
-    private float currentSpeed;
+    private bool isMoving = true;
 
-    private bool isMoving = false;
-
-    public bool HasReachedEnd => currentIndex >= pathPoints.Length -1;
-
-    private void Start()
-    {
-        currentSpeed = baseSpeed;
-        transform.position = pathPoints[0].position;
-    }
-
-    public void StartMoving()
-    {
-        isMoving = true;
-    }
-
-    public void IncreaseSpeed()
-    {
-        currentSpeed += speedIncrement;
-    }
+    public bool HasReachedEnd { get; private set; } = false;
 
     void Update()
     {
-        if (!isMoving || HasReachedEnd) return;
+        if (!isMoving || HasReachedEnd || waypoints.Length == 0) return;
 
-        Transform target = pathPoints[currentIndex];
-        transform.position = Vector3.MoveTowards(transform.position, target.position, currentSpeed * Time.deltaTime);
+        float speed = Input.GetKey(KeyCode.Space) ? boostedSpeed : moveSpeed;
+        Vector3 target = waypoints[currentIndex].position;
 
-        if (Vector3.Distance(transform.position, target.position) < 0.01f)
+        transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
+
+        float distance = Vector3.Distance(transform.position, target);
+
+        if (distance < 0.05f)
         {
             currentIndex++;
+            if (currentIndex >= waypoints.Length)
+            {
+                HasReachedEnd = true;
+                Debug.Log("🔥 Api sudah sampai di ujung petasan!");
+            }
         }
     }
 }
