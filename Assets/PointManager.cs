@@ -4,34 +4,37 @@ using UnityEngine;
 
 public class PointManager : MonoBehaviour
 {
-    public static PointManager Instance;
+    public static PointManager Instance { get; private set; }
 
-    public int totalPoints = 0;
+    private int totalPoints = 0;
 
-    void Awake()
+    private void Awake()
     {
         if (Instance != null && Instance != this)
         {
-            Destroy(gameObject);
+            Destroy(gameObject); // Hancurkan duplikat
             return;
         }
+
         Instance = this;
-        DontDestroyOnLoad(gameObject);
+        DontDestroyOnLoad(gameObject); // BERTAHAN ANTAR SCENE
     }
 
-    public void AddPoints(int points)
+    public void AddPoints(int amount)
     {
-        totalPoints += points;
-        Debug.Log("Points Added: " + points + " | Total: " + totalPoints);
+        totalPoints += amount;
+        Debug.Log($"[PointManager] Add: {amount} → Total: {totalPoints}");
+    }
+
+    public int GetTotalPoints()
+    {
+        Debug.Log($"[PointManager] Get Total: {totalPoints}");
+        return totalPoints;
     }
 
     public void ResetPoints()
     {
         totalPoints = 0;
-    }
-
-    public int GetTotalPoints()
-    {
-        return totalPoints;
+        Debug.Log($"[PointManager] RESET. Total now: {totalPoints}");
     }
 }

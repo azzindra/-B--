@@ -74,7 +74,7 @@ public class Scenario5Controller : MonoBehaviour
         {
             ScenarioGameplay.SetActive(true);
         }
-        
+
         timer = scenarioDuration;
 
         if (playerMotorScript != null)
@@ -110,6 +110,8 @@ public class Scenario5Controller : MonoBehaviour
         isScenarioActive = false;
 
         ending1Cutscene?.SetActive(true);
+        PointManager.Instance?.AddPoints(1);
+        Invoke(nameof(GoToNext), 3.0f);
     }
 
     public void TriggerCrashEnding()
@@ -120,6 +122,8 @@ public class Scenario5Controller : MonoBehaviour
         isScenarioActive = false;
 
         ending2Cutscene?.SetActive(true);
+        PointManager.Instance?.AddPoints(2);
+        Invoke(nameof(GoToNext), 3.0f);
     }
 
     void TriggerGoodEnding()
@@ -128,5 +132,12 @@ public class Scenario5Controller : MonoBehaviour
         isScenarioActive = false;
 
         goodEndingCutscene?.SetActive(true);
+        PointManager.Instance?.AddPoints(0);
+        Invoke(nameof(GoToNext), 3.0f);
+    }
+    private void GoToNext()
+    {
+        Debug.Log("Scenario1 selesai. Menuju scenario berikutnya...");
+        GameManager.Instance?.LoadNextStep();
     }
 }

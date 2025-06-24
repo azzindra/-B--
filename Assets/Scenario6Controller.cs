@@ -65,12 +65,13 @@ public class Scenario6Controller : MonoBehaviour
         }
     }
 
-    public void TriggerHazardEnding() => TriggerEnding(HazardEnding);
-    public void TriggerOrganicEnding() => TriggerEnding(OrganicEnding);
-    public void TriggerLitteringEnding() => TriggerEnding(LitteringEnding);
-    public void TriggerGoodEnding() => TriggerEnding(GoodEnding);
+    public void TriggerHazardEnding() => TriggerEnding(HazardEnding, 1);
+    public void TriggerOrganicEnding() => TriggerEnding(OrganicEnding, 1);
+    public void TriggerLitteringEnding() => TriggerEnding(LitteringEnding, 2);
+    public void TriggerGoodEnding() => TriggerEnding(GoodEnding, 0);
 
-    private void TriggerEnding(GameObject endingObject)
+
+    private void TriggerEnding(GameObject endingObject, int pointValue)
     {
         if (isEndingTriggered) return;
 
@@ -80,6 +81,16 @@ public class Scenario6Controller : MonoBehaviour
         Botol.GetComponent<BottleController>()?.DisableInteraction();
 
         if (endingObject != null)
+        {
             endingObject.SetActive(true);
+            PointManager.Instance?.AddPoints(pointValue); // ✅ Tambahkan poin
+            Invoke(nameof(GoToNext), 3.0f);
+        }
+    }
+
+    private void GoToNext()
+    {
+        Debug.Log("Scenario1 selesai. Menuju scenario berikutnya...");
+        GameManager.Instance?.LoadNextStep();
     }
 }

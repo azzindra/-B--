@@ -5,11 +5,16 @@ using UnityEngine.SceneManagement;
 
 public class Introduction : MonoBehaviour
 {
+    private bool hasLoaded = false;
+
     void Update()
     {
-        if (Input.anyKeyDown)
+        if (!hasLoaded && Input.anyKeyDown)
         {
-            SceneManager.LoadScene("LoadingScreen");
+            hasLoaded = true;
+
+            // Panggil LoadNextStep hanya sekali, saat pemain menekan tombol
+            GameManager.Instance?.LoadNextStep();
         }
     }
 }

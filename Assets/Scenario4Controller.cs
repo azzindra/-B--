@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Unity.UI;
 
 public class Scenario4Controller : MonoBehaviour
 {
@@ -86,26 +85,44 @@ public class Scenario4Controller : MonoBehaviour
                     {
                         case AppButton.EndingType.Good:
                             goodEndPanel.SetActive(true);
+                            PointManager.Instance?.AddPoints(0);
                             break;
+
                         case AppButton.EndingType.Bad:
                             badEndPanel.SetActive(true);
+                            PointManager.Instance?.AddPoints(1);
                             break;
+
                         case AppButton.EndingType.Stupid1:
                             stupidEnd1Panel.SetActive(true);
+                            PointManager.Instance?.AddPoints(1);
                             break;
+
                         case AppButton.EndingType.Stupid2:
                             stupidEnd2Panel.SetActive(true);
+                            PointManager.Instance?.AddPoints(2);
                             break;
                     }
+
+                    Invoke(nameof(GoToNext), 3.0f); // Pindahkan ke dalam if
                 }
             }
         }
     }
+
 
     void ShowBadEnding()
     {
         hasSelectedApp = true;
         isGameActive = false;
         badEndPanel.SetActive(true);
+        PointManager.Instance?.AddPoints(3); // Atur poin default saat waktu habis
+    }
+
+
+    private void GoToNext()
+    {
+        Debug.Log("Scenario1 selesai. Menuju scenario berikutnya...");
+        GameManager.Instance?.LoadNextStep();
     }
 }

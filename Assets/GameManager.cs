@@ -8,13 +8,14 @@ public class GameManager : MonoBehaviour
 
     private List<string> randomizableScenarios = new List<string> {
         "Scenario2", "Scenario3", "Scenario4", "Scenario5",
-        "Scenario6", "Scenario7", "Scenario8", "Scenario9"
+        "Scenario6", "Scenario7", "Scenario8", "Scenario9",
+        "Scenario10", "Scenario11"
     };
 
     private Queue<string> scenarioQueue = new Queue<string>();
     private int totalScore = 0;
-    private int dayCounter = 1;
-    private int totalDays = 10;
+    private int dayCounter = 0; // dimulai dari 0 agar Scenario1 valid saat dimulai
+    private int totalDays = 12;
 
     public string currentScenario = "";
 
@@ -36,91 +37,73 @@ public class GameManager : MonoBehaviour
     {
         scenarioQueue.Clear();
 
-        // Urutan fix
-        scenarioQueue.Enqueue("Scenario1");
-
-        // Acak sisa scenario
+        scenarioQueue.Enqueue("Scenario1"); // selalu di awal
         ShuffleList(randomizableScenarios);
         foreach (var scenario in randomizableScenarios)
         {
             scenarioQueue.Enqueue(scenario);
         }
-
-        scenarioQueue.Enqueue("Scenario10");
+        scenarioQueue.Enqueue("Scenario12"); // selalu terakhir
     }
 
     void ShuffleList(List<string> list)
     {
         for (int i = 0; i < list.Count; i++)
         {
-            int randomIndex = Random.Range(i, list.Count);
-            (list[i], list[randomIndex]) = (list[randomIndex], list[i]);
+            int rand = Random.Range(i, list.Count);
+            (list[i], list[rand]) = (list[rand], list[i]);
         }
     }
 
     public void LoadNextStep()
     {
-        Debug.Log($"[GameManager] LoadNextStep called. dayCounter = {dayCounter}");
+        Debug.Log($"[GameManager] LoadNextStep called. Day = {dayCounter}");
 
-        if ((dayCounter == 6) && dayCounter <= totalDays)
-        {
-            SceneManager.LoadScene("InterimEvaluation");
-        }
-        else if (dayCounter > totalDays)
+        if (dayCounter >= totalDays)
         {
             SceneManager.LoadScene("EvaluationReport");
+            return;
+        }
+
+        if (dayCounter > 0 && dayCounter % 4 == 0 && dayCounter < totalDays)
+        {
+            SceneManager.LoadScene("InterimEvaluation");
+            return;
+        }
+
+        if (scenarioQueue.Count > 0)
+        {
+            currentScenario = scenarioQueue.Dequeue();
+            SceneManager.LoadScene("LoadingScreen");
         }
         else
         {
-            if (scenarioQueue.Count > 0)
-            {
-                currentScenario = scenarioQueue.Dequeue();
-                Debug.Log($"[GameManager] Loading next scenario: {currentScenario}");
-                SceneManager.LoadScene("LoadingScreen");
-            }
-            else
-            {
-                Debug.LogWarning("[GameManager] Scenario queue is empty!");
-            }
+            Debug.LogWarning("Scenario queue kosong padahal day belum mencapai totalDays.");
+            SceneManager.LoadScene("EvaluationReport"); // fallback
         }
     }
-
-    // 💡 Tambahan agar kompatibel dengan ScenarioController.cs
-    public void LoadNextScenario()
-    {
-        LoadNextStep();
-    }
-
     public void LoadCurrentScenario()
     {
-        Debug.Log("[GameManager] Loading scenario: " + currentScenario);
+        Debug.Log("[GameManager] Loading currentScenario: " + currentScenario);
         SceneManager.LoadScene(currentScenario);
-    }
-
-    public int GetCurrentDay()
-    {
-        return dayCounter;
     }
 
     public void AdvanceDay()
     {
         dayCounter++;
+        Debug.Log("[GameManager] Day advanced to: " + dayCounter);
     }
 
-    public void AddScore(int score)
-    {
-        totalScore += score;
-    }
+    public int GetCurrentDay() => dayCounter;
 
-    public int GetTotalScore()
-    {
-        return totalScore;
-    }
+    public void AddScore(int score) => totalScore += score;
+
+    public int GetTotalScore() => totalScore;
 
     public void ResetGame()
     {
         totalScore = 0;
-        dayCounter = 1;
+        dayCounter = 0;
         PrepareScenarioOrder();
     }
 }

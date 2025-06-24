@@ -100,17 +100,14 @@ public class Scenario7Controller : MonoBehaviour
             case EndingType.Stupid:
                 stupidEndingPanel?.SetActive(true);
                 break;
-            // Tambah panel lainnya sesuai kebutuhan
         }
 
-        // Tambah skor berdasarkan ending type
+        // ✅ Tambahkan poin sesuai EndingScore list
         int scoreToAdd = GetScoreByEnding(type);
-        if (ScoreManager.Instance != null)
-        {
-            ScoreManager.Instance.AddScore(scoreToAdd);
-        }
-
+        PointManager.Instance?.AddPoints(scoreToAdd);
         Debug.Log($"🔔 {type} Ending Triggered! Score: {scoreToAdd}");
+
+        Invoke(nameof(GoToNext), 3.0f);
     }
 
     int GetScoreByEnding(EndingType type)
@@ -121,5 +118,10 @@ public class Scenario7Controller : MonoBehaviour
                 return entry.score;
         }
         return 0; // Default kalau gak ketemu
+    }
+    private void GoToNext()
+    {
+        Debug.Log("Scenario1 selesai. Menuju scenario berikutnya...");
+        GameManager.Instance?.LoadNextStep();
     }
 }

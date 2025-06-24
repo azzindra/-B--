@@ -6,19 +6,20 @@ using TMPro;
 
 public class LoadingScreen : MonoBehaviour
 {
-    public TextMeshProUGUI dayText;
-    public float delayBeforeLoad = 2f;
+    public float delay = 2.5f;
+    public TextMeshPro dayText; // atau TMP_Text kalau pakai TextMeshPro
 
     void Start()
     {
-        int day = GameManager.Instance.GetCurrentDay();
-        dayText.text = (day == 15) ? "FINAL DAY" : $"DAY {day:00}";
+        int day = GameManager.Instance != null ? GameManager.Instance.GetCurrentDay() + 1 : 0;
+        if (dayText != null) dayText.text = "Day " + day.ToString();
 
-        Invoke(nameof(LoadScenario), delayBeforeLoad);
+        Invoke("LoadScenario", delay);
     }
 
     void LoadScenario()
     {
-        GameManager.Instance.LoadCurrentScenario();
+        if (GameManager.Instance != null)
+            GameManager.Instance.LoadCurrentScenario();
     }
 }

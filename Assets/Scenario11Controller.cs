@@ -129,18 +129,25 @@ public class Scenario11Controller : MonoBehaviour
         if (result == "Good")
         {
             endingPanelGood.SetActive(true);
+            PointManager.Instance?.AddPoints(0);
         }
         else
         {
             endingPanelBad.SetActive(true);
+            PointManager.Instance?.AddPoints(1);
         }
-
         Debug.Log("Ending: " + result);
+        Invoke(nameof(GoToNext), 3.0f);
     }
 
     public void ForceBadEnding()
     {
         forceBadEnding = true;
+    }
+    private void GoToNext()
+    {
+        Debug.Log("Scenario1 selesai. Menuju scenario berikutnya...");
+        GameManager.Instance?.LoadNextStep();
     }
 
 }

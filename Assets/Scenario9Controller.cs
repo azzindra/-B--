@@ -71,6 +71,7 @@ public class Scenario9Controller : MonoBehaviour
         if (scenarioEnded) return;
         scenarioEnded = true;
         Debug.Log("Good Ending");
+        PointManager.Instance?.AddPoints(0); 
         ShowEndingPanel(goodEndingPanel);
     }
 
@@ -79,6 +80,7 @@ public class Scenario9Controller : MonoBehaviour
         if (scenarioEnded) return;
         scenarioEnded = true;
         Debug.Log("Crash Ending");
+        PointManager.Instance?.AddPoints(2); 
         ShowEndingPanel(crashEndingPanel);
     }
 
@@ -87,6 +89,7 @@ public class Scenario9Controller : MonoBehaviour
         if (scenarioEnded) return;
         scenarioEnded = true;
         Debug.Log("Disability Ending");
+        PointManager.Instance?.AddPoints(2); 
         ShowEndingPanel(disabilityEndingPanel);
     }
 
@@ -95,6 +98,7 @@ public class Scenario9Controller : MonoBehaviour
         if (scenarioEnded) return;
         scenarioEnded = true;
         Debug.Log("Stupid Ending (Waktu habis)");
+        PointManager.Instance?.AddPoints(1); 
         ShowEndingPanel(stupidEndingPanel);
     }
 
@@ -103,5 +107,11 @@ public class Scenario9Controller : MonoBehaviour
         gameplayArea.SetActive(false);
         panel.SetActive(true);
         isGameplayStarted = false;
+        Invoke(nameof(GoToNext), 3.0f);
+    }
+    private void GoToNext()
+    {
+        Debug.Log("Scenario1 selesai. Menuju scenario berikutnya...");
+        GameManager.Instance?.LoadNextStep();
     }
 }

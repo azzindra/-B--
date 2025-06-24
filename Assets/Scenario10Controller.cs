@@ -71,14 +71,20 @@ public class Scenario10Controller : MonoBehaviour
         itemMover.StopMoving();
 
         if (isGoodEnding)
+        {
             goodEndingPanel.SetActive(true);
+            PointManager.Instance?.AddPoints(0);
+        }
         else
+        {
             badEndingPanel.SetActive(true);
-
-        // Kirim data poin ke GameManager jika kamu pakai sistem poin
-        //if (ScenarioPointTracker.Instance != null)
-        //{
-        //    ScenarioPointTracker.Instance.RegisterResult(isGoodEnding ? EndingType.Good : EndingType.Bad);
-        //}
+            PointManager.Instance?.AddPoints(1);
+        }
+            Invoke(nameof(GoToNext), 3.0f);
+    }
+    private void GoToNext()
+    {
+        Debug.Log("Scenario1 selesai. Menuju scenario berikutnya...");
+        GameManager.Instance?.LoadNextStep();
     }
 }

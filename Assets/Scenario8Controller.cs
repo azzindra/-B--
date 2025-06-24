@@ -36,12 +36,20 @@ public class Scenario8Controller : MonoBehaviour
         if (isGood)
         {
             endingPanelGood.SetActive(true);
-            // Tambah poin ending baik jika pakai sistem poin
+            PointManager.Instance?.AddPoints(0); // ✅ poin untuk ending baik
         }
         else
         {
             endingPanelBad.SetActive(true);
-            // Tambah poin ending buruk
+            PointManager.Instance?.AddPoints(1); // ✅ poin untuk ending buruk
         }
+
+        Invoke(nameof(GoToNext), 3.0f);
+    }
+
+    private void GoToNext()
+    {
+        Debug.Log("Scenario1 selesai. Menuju scenario berikutnya...");
+        GameManager.Instance?.LoadNextStep();
     }
 }

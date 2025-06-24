@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Linq;
 
 public class Scenario3Controller : MonoBehaviour
 {
@@ -78,40 +79,40 @@ public class Scenario3Controller : MonoBehaviour
     }
 
     void CheckEndingCondition()
+{
+    int totalOrders = foodCounts.Sum();
+
+    if (totalOrders >= 11)
     {
-        int totalOrders = 0;
-        
-
-        foreach (int count in foodCounts)
-        {
-            totalOrders += count;
-            
-        }
-
-        if (totalOrders >= 11)
-        {
-            // Trigger Cutscene Ending Buruk 1
-            Debug.Log("Ending Buruk 1");
-            TriggerCutscene("BadEnding1");
-        }
-        else if (totalOrders >= 3 && totalOrders <= 10)
-        {
-            // Trigger Cutscene Ending Baik
-            Debug.Log("Ending Baik");
-            TriggerCutscene("GoodEnding");
-        }
-        else if (totalOrders == 0 && totalOrders <= 2)
-        {
-            // Trigger Cutscene Ending Buruk 2
-            Debug.Log("Ending Buruk 2");
-            TriggerCutscene("BadEnding2");
-        }
+        PointManager.Instance?.AddPoints(2); // BadEnding1
+        TriggerCutscene("BadEnding1");
     }
+    else if (totalOrders >= 3 && totalOrders <= 10)
+    {
+        PointManager.Instance?.AddPoints(0); // GoodEnding
+        TriggerCutscene("GoodEnding");
+    }
+    else
+    {
+        PointManager.Instance?.AddPoints(1); // BadEnding2
+        TriggerCutscene("BadEnding2");
+    }
+
+    Invoke(nameof(GoToNext), 3.0f);
+}
+
+
 
     void TriggerCutscene(string cutsceneName)
     {
         // Implementasi bisa pakai animator atau pindah scene/cutscene canvas
         // Misal:
         CutsceneScenario3.Instance.PlayCutscene(cutsceneName);
+    }
+    
+    private void GoToNext()
+    {
+        Debug.Log("Scenario1 selesai. Menuju scenario berikutnya...");
+        GameManager.Instance?.LoadNextStep();
     }
 }

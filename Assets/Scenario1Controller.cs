@@ -83,6 +83,7 @@ public class Scenario1Controller : MonoBehaviour
 
     private void EndScenario(bool isGood)
     {
+        if (isScenarioEnded) return; // Proteksi tambahan
         isScenarioEnded = true;
         isGameActive = false;
 
@@ -91,20 +92,21 @@ public class Scenario1Controller : MonoBehaviour
         if (isGood)
         {
             endingPanelGood?.SetActive(true);
-            GameManager.Instance?.AddScore(pointGood);
+            PointManager.Instance?.AddPoints(0);;
         }
         else
         {
             endingPanelBad?.SetActive(true);
-            GameManager.Instance?.AddScore(pointBad);
+            PointManager.Instance?.AddPoints(1);;
         }
 
         GameManager.Instance?.AdvanceDay();
-        Invoke(nameof(GoToNext), 2.5f);
+        Invoke(nameof(GoToNext), 3.0f);
     }
 
     private void GoToNext()
     {
-        GameManager.Instance?.LoadNextScenario();
+        Debug.Log("Scenario1 selesai. Menuju scenario berikutnya...");
+        GameManager.Instance?.LoadNextStep();
     }
 }

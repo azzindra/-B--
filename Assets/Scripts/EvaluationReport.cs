@@ -19,9 +19,4 @@ public class EvaluationReport : MonoBehaviour
             Debug.LogError("ReportText is not assigned in the Inspector!");
         }
     }
-
-    public void RestartGame()
-    {
-        SceneManager.LoadScene("MainMenu"); // Kembali ke menu utama
-    }
 }

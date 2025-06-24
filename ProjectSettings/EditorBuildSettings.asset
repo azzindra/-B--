@@ -6,11 +6,11 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/SplashScreen.unity
+    guid: f080023129b348e4584fdfc97908114e
+  - enabled: 1
     path: Assets/Scenes/MainMenu.unity
     guid: 2cda990e2423bbf4892e6590ba056729
-  - enabled: 1
-    path: Assets/Scenes/GameManager.unity
-    guid: 2b70c56b3fe3b4942b61501407023a62
   - enabled: 1
     path: Assets/Scenes/Introduction.unity
     guid: a6cff88395db30a4297e37558cf118df
@@ -48,8 +48,11 @@ EditorBuildSettings:
     path: Assets/Scenes/Scenario Scene/Scenario10.unity
     guid: 5ff9b504edd24f044b9ac710476cace9
   - enabled: 1
-    path: Assets/Scenes/InterimEvaluation.unity
-    guid: 389cbdf393a2a6848b59e740ce615974
+    path: Assets/Scenes/Scenario Scene/Scenario11.unity
+    guid: 96d82e6b2b8888e4f8833cadfa386f64
+  - enabled: 1
+    path: Assets/Scenes/Scenario Scene/Scenario12.unity
+    guid: 8528f8697e73f8048b869ac939ea5928
   - enabled: 1
     path: Assets/Scenes/EvaluationReport.unity
     guid: 60f019306693a194c961e89f16fd45fe

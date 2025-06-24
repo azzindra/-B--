@@ -14,8 +14,7 @@ public class Scenario12Controller : MonoBehaviour
 
     public float slowDuration = 1f;
     private bool hasCollided = false;
-
-    private bool scenarioActive = false;
+    private bool scenarioActive = false; // ✅ Pastikan ini ADA
 
     void Start()
     {
@@ -40,16 +39,22 @@ public class Scenario12Controller : MonoBehaviour
     private void ShowGoodEnding()
     {
         goodEndingPanel.SetActive(true);
+        PointManager.Instance?.AddPoints(0); // ✅ poin untuk Good Ending
+        GameManager.Instance?.AdvanceDay();
+        Invoke(nameof(GoToNext), 3.0f);
     }
 
     private void ShowBadEnding()
     {
         badEndingPanel.SetActive(true);
+        PointManager.Instance?.AddPoints(1); // ✅ poin untuk Good Ending
+        GameManager.Instance?.AdvanceDay();
+        Invoke(nameof(GoToNext), 3.0f);
     }
 
     public void RegisterCollision(PlayerController player, NPCController npc)
     {
-        if (!hasCollided)
+        if (!hasCollided && scenarioActive) // ✅ Pakai hanya jika butuh
         {
             hasCollided = true;
             Debug.Log("==> Collision Terdeteksi: BAD END akan dipicu!");
@@ -58,5 +63,10 @@ public class Scenario12Controller : MonoBehaviour
         Debug.Log("==> Menjalankan efek tabrakan: SlowDown + GetHit");
         player.SlowDown(slowDuration);
         npc.GetHit(slowDuration);
+    }
+    private void GoToNext()
+    {
+        Debug.Log("Scenario1 selesai. Menuju scenario berikutnya...");
+        GameManager.Instance?.LoadNextStep();
     }
 }
